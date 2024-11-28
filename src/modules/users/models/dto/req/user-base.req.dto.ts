@@ -52,10 +52,10 @@ export class UserBaseReqDto {
   @IsEnum(RoleEnum)
   role: RoleEnum;
 
-  @ValidateNested({ each: true })
-  @IsArray()
-  @Type(() => CarBaseReqDto)
-  cars: CarBaseReqDto[];
+  // @ValidateNested({ each: true })
+  // @IsArray()
+  // @Type(() => CarBaseReqDto)
+  // cars: CarBaseReqDto[];
 
   // @Type(() => Number)
   // @IsInt()
