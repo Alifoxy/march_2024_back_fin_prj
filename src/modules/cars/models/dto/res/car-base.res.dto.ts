@@ -4,7 +4,7 @@ import { UserResDto } from '../../../../users/models/dto/res/user.res.dto';
 import { ModelEnum } from '../../enums/model.enum';
 import { BrandEnum } from '../../enums/brand.enum';
 
-export class ArticleResDto {
+export class CarResDto {
   @ApiProperty({
     example: '796cea24-a328-4463-a5e1-85a779e4780f',
     description: 'Article ID',

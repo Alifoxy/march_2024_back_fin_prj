@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { In } from 'typeorm';
 
-import { ArticleID } from '../../../common/types/entity-ids.type';
+import { ArticleID, CarID } from "../../../common/types/entity-ids.type";
 import { ArticleEntity } from '../../../database/entities/article.entity';
 import { TagEntity } from '../../../database/entities/tag.entity';
 import { IUserData } from '../../auth/models/interfaces/user-data.interface';
@@ -17,9 +17,9 @@ import { ListArticleQueryDto } from '../models/dto/req/list-article-query.dto';
 import { UpdateArticleDto } from '../models/dto/req/update-article.dto';
 
 @Injectable()
-export class ArticlesService {
+export class CarsService {
   constructor(
-    private readonly articleRepository: ArticleRepository,
+    private readonly carRepository: CarRepository,
     private readonly tagRepository: TagRepository,
     private readonly likeRepository: LikeRepository,
   ) {}
@@ -44,9 +44,9 @@ export class ArticlesService {
 
   public async findOne(
     userData: IUserData,
-    articleId: ArticleID,
-  ): Promise<ArticleEntity> {
-    return await this.articleRepository.getById(userData, articleId);
+    carId: CarID,
+  ): Promise<CarEntity> {
+    return await this.articleRepository.getById(userData, carId);
   }
 
   public async update(

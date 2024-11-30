@@ -1,7 +1,7 @@
-import { ListArticleQueryDto } from '../req/list-article-query.dto';
-import { ArticleResDto } from './article.res.dto';
+import { ListCarQueryDto } from '../req/car-list-query.dto';
+import { CarResDto } from './car-base.res.dto';
 
-export class ArticleListResDto extends ListArticleQueryDto {
-  data: ArticleResDto[];
+export class CarListResDto extends ListCarQueryDto {
+  data: CarResDto[];
   total: number;
 }

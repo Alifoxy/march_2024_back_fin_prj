@@ -21,6 +21,10 @@ import { ArticlesMapper } from './services/articles.mapper';
 import { ArticleID, CarID } from "../../common/types/entity-ids.type";
 import { ListArticleQueryDto } from './models/dto/req/list-article-query.dto';
 import { ArticleListResDto } from './models/dto/res/article-list.res.dto';
+import { CarListResDto } from "./models/dto/res/car-list.res.dto";
+import { CarResDto } from "./models/dto/res/car-base.res.dto";
+import { CarBaseReqDto } from "./models/dto/req/car-base.req.dto";
+
 
 @ApiBearerAuth()
 @ApiTags('Articles')
@@ -31,7 +35,7 @@ export class CarsController {
   @Post()
   public async create(
     @CurrentUser() userData: IUserData,
-    @Body() dto: CreateCarDto,
+    @Body() dto: CarBaseReqDto,
   ): Promise<CarResDto> {
     const result = await this.carService.create(userData, dto);
     return CarsMapper.toResDto(result);
