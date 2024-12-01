@@ -11,6 +11,7 @@ import { CarEntity } from './car.entity';
 import { TableNameEnum } from './enums/table-name.enum';
 import { CreateUpdateModel } from './models/create-update.model';
 import { RefreshTokenEntity } from './refresh-token.entity';
+import { RoleEnum } from "../../modules/users/models/enums/role.enum";
 
 @Index(['name'])
 @Entity(TableNameEnum.USERS)
@@ -33,8 +34,8 @@ export class UserEntity extends CreateUpdateModel {
   @Column('boolean', { default: false })
   isPremium: boolean;
 
-  @Column('text', { default: 'user' })
-  role: string;
+  @Column('text', { default: RoleEnum.USER })
+  role: RoleEnum;
 
   @Column('timestamp', { nullable: true })
   deleted?: Date;

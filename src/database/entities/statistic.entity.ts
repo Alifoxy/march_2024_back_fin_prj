@@ -1,35 +1,27 @@
-import { CarID} from '../../common/types/entity-ids.type';
+import { CarID, StatisticID} from '../../common/types/entity-ids.type';
 import { CommentEntity } from './comment.entity';
 import { TableNameEnum } from './enums/table-name.enum';
 import { LikeEntity } from './like.entity';
 import { CreateUpdateModel } from './models/create-update.model';
 import { TagEntity } from './tag.entity';
 import { UserEntity } from './user.entity';
-import { Entity, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CarEntity } from "./car.entity";
 
-@Entity(TableNameEnum.ARTICLES)
+@Entity(TableNameEnum.STATISTIC)
 export class StatisticEntity extends CreateUpdateModel {
   @PrimaryGeneratedColumn('uuid')
-  id: CarID;
+  id: StatisticID;
 
-  @Column('text')
-  producer: string;
-
-  @Column('text')
-  model?: string;
-
-  @Column('text', { nullable: true })
-  brand?: string;
-
-  @OneToOne(() => ViewsEntity, (entity) => entity.article)
+  @OneToOne(() => ViewsEntity, (entity) => entity.statistic)
   views?: ViewsEntity;
 
-  @OneToMany(() => CommentEntity, (entity) => entity.article)
-  mid_price?: CommentEntity[];
+  @OneToOne(() => MidPriceEntity, (entity) => entity.statistic)
+  mid_price?: MidPriceEntity;
 
   @Column()
   car_id: CarID;
-  @ManyToOne(() => UserEntity, (entity) => entity.cars, {
+  @OneToOne(() => CarEntity, (entity) => entity.statistic, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'car_id' })

@@ -19,11 +19,7 @@ export class ListCarQueryDto {
 
   @IsString()
   @IsOptional()
-  brand?: string;
-
-  @IsString()
-  @IsOptional()
-  model?: string;
+  price?: number;
 
   @Transform(TransformHelper.trim)
   @Transform(TransformHelper.toLowerCase)

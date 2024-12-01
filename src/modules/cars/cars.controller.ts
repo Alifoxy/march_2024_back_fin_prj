@@ -11,19 +11,19 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-import { ArticlesService } from './services/articles.service';
-import { CreateArticleDto } from './models/dto/req/create-article.dto';
 import { UpdateArticleDto } from './models/dto/req/update-article.dto';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { IUserData } from '../auth/models/interfaces/user-data.interface';
 import { ArticleResDto } from './models/dto/res/article.res.dto';
 import { ArticlesMapper } from './services/articles.mapper';
-import { ArticleID, CarID } from "../../common/types/entity-ids.type";
+import { CarID } from "../../common/types/entity-ids.type";
 import { ListArticleQueryDto } from './models/dto/req/list-article-query.dto';
 import { ArticleListResDto } from './models/dto/res/article-list.res.dto';
 import { CarListResDto } from "./models/dto/res/car-list.res.dto";
 import { CarResDto } from "./models/dto/res/car-base.res.dto";
 import { CarBaseReqDto } from "./models/dto/req/car-base.req.dto";
+import { CarsService } from "./services/cars.service";
+import { CarsMapper } from "./services/cars.mapper";
 
 
 @ApiBearerAuth()

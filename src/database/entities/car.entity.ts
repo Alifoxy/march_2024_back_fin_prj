@@ -14,6 +14,8 @@ import { TableNameEnum } from './enums/table-name.enum';
 import { CreateUpdateModel } from './models/create-update.model';
 import { UserEntity } from './user.entity';
 import { StatisticEntity } from './statistic.entity';
+import { ModelEnum } from "../../modules/cars/models/enums/model.enum";
+import { BrandEnum } from "../../modules/cars/models/enums/brand.enum";
 
 @Entity(TableNameEnum.CARS)
 export class CarEntity extends CreateUpdateModel {
@@ -24,10 +26,13 @@ export class CarEntity extends CreateUpdateModel {
   producer: string;
 
   @Column('text')
-  model?: string;
+  model?: ModelEnum;
 
   @Column('text')
-  brand?: string;
+  brand?: BrandEnum;
+
+  @Column('text')
+  region?: RegionEnum;
 
   @Column('text')
   year?: string;

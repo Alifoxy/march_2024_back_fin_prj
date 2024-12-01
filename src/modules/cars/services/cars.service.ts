@@ -15,6 +15,9 @@ import { TagRepository } from '../../repository/services/tag.repository';
 import { CreateArticleDto } from '../models/dto/req/create-article.dto';
 import { ListArticleQueryDto } from '../models/dto/req/list-article-query.dto';
 import { UpdateArticleDto } from '../models/dto/req/update-article.dto';
+import { CreateCarDto } from "../models/dto/req/create-car.dto";
+import { CarEntity } from "../../../database/entities/car.entity";
+import { CarRepository } from "../../repository/services/car.repository";
 
 @Injectable()
 export class CarsService {
@@ -26,12 +29,12 @@ export class CarsService {
 
   public async create(
     userData: IUserData,
-    dto: CreateArticleDto,
-  ): Promise<ArticleEntity> {
-    const tags = await this.createTags(dto.tags);
+    dto: CreateCarDto,
+  ): Promise<CarEntity> {
+    const statistic = await this.createStatistic(dto.statistic);
 
-    return await this.articleRepository.save(
-      this.articleRepository.create({ ...dto, tags, user_id: userData.userId }),
+    return await this.carRepository.save(
+      this.carRepository.create({ ...dto, statistic, user_id: userData.userId }),
     );
   }
 

@@ -11,8 +11,9 @@ import { TransformHelper } from '../../../../../common/helpers/transform.helper'
 import { ApiProperty } from '@nestjs/swagger';
 import { CurrencyEnum } from '../../enums/currency.enum';
 import { BrandEnum, ModelEnum } from '../../enums/';
+import { RegionEnum } from "../../enums/region.enum";
 
-export class PriceReqDto {
+export class PriceDto {
   @IsNotEmpty
   @IsEnum(CurrencyEnum)
   currency: CurrencyEnum;
@@ -44,6 +45,10 @@ export class CarBaseReqDto {
   @Type(() => String)
   description: string;
 
+  @IsNotEmpty
+  @IsEnum(RegionEnum)
+  region: RegionEnum;
+
   @ApiProperty({ example: 2021 })
   @Type(() => Number)
   @IsInt()
@@ -54,7 +59,7 @@ export class CarBaseReqDto {
   @Length(0, 3000)
   image?: string;
 
-  price: PriceReqDto;
+  price: PriceDto;
 
   // @Transform(TransformHelper.trim)
   // @Transform(TransformHelper.toLowerCase)

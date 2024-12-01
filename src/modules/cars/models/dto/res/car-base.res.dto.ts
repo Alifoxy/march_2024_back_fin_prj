@@ -18,13 +18,13 @@ export class CarResDto {
   producer: string;
 
   @ApiProperty({
-    example: 'Car Model',
+    example: 'Lanos',
     description: 'Car Model',
   })
   model: ModelEnum;
 
   @ApiProperty({
-    example: 'Car Brand',
+    example: 'BMV',
     description: 'Car Brand',
   })
   brand: BrandEnum;
@@ -34,6 +34,18 @@ export class CarResDto {
     description: 'Car Description',
   })
   description: string;
+
+  @ApiProperty({
+    example: 'Car Sale Region',
+    description: 'Car Sale Region',
+  })
+  region: string;
+
+  @ApiProperty({
+    example: 'Car Sale Region',
+    description: 'Car Sale Region',
+  })
+  price: string;
 
   @ApiProperty({
     example: '2021-09-29T10:00:00.000Z',
