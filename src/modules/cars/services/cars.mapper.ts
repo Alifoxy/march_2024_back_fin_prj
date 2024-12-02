@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 
 import { CarEntity } from '../../../database/entities/car.entity';
 import { UserMapper } from '../../users/services/user.mapper';
-import { ArticleListResDto } from '../models/dto/res/article-list.res.dto';
 import { CarResDto } from '../models/dto/res/car-base.res.dto';
 import { ListCarQueryDto } from '../models/dto/req/car-list-query.dto';
 import { CarListResDto } from '../models/dto/res/car-list.res.dto';
@@ -26,6 +25,7 @@ export class CarsMapper {
       price: data.price,
       description: data.description,
       region: data.region,
+      image: data.image,
       created: data.created,
       updated: data.updated,
       user: data.user ? UserMapper.toResDto(data.user) : null,

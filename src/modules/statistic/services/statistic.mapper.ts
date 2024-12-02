@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 
-import { TagEntity } from '../../../database/entities/tag.entity';
-import { TagResDto } from '../models/dto/res/tag.res.dto';
 import { StatisticEntity } from '../../../database/entities/statistic.entity';
 import { StatisticResDto } from '../models/dto/res/statistic.res.dto';
 

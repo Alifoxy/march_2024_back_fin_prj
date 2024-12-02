@@ -21,6 +21,7 @@ export class UserMapper {
   ): IUserData {
     return {
       userId: user.id,
+      isPremium: user.isPremium,
       deviceId: jwtPayload.deviceId,
       email: user.email,
     };
