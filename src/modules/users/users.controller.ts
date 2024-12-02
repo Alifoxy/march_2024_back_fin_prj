@@ -4,62 +4,95 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
-  Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import {
-  ApiConflictResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 
-import { CreateUserReqDto } from './dto/req/create-user.req.dto';
-import { UpdateUserReqDto } from './dto/req/update-user.req.dto';
-import { UserListReqDto } from './dto/req/user-list.req.dto';
-import { UserResDto } from './dto/res/user.res.dto';
-import { UsersService } from './users.service';
+import { ApiFile } from '../../common/decorators/api-file.decorator';
+import { UserID } from '../../common/types/entity-ids.type';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
+import { IUserData } from '../auth/models/interfaces/user-data.interface';
+import { UpdateUserReqDto } from './models/dto/req/update-user.req.dto';
+import { UserBaseResDto } from './models/dto/res/user-base.res.dto';
+import { UserMapper } from './services/user.mapper';
+import { UsersService } from './services/users.service';
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiForbiddenResponse({ description: 'Forbidden' })
-  @ApiNotFoundResponse({ description: 'User not found' })
-  @ApiConflictResponse({ description: 'Conflict' })
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @ApiOperation({
-    summary: 'Create user',
-    description: 'Create a new user',
-    deprecated: true,
-  })
-  @Post()
-  async create(@Body() createUserDto: CreateUserReqDto): Promise<UserResDto> {
-    return await this.usersService.create(createUserDto);
+  @ApiBearerAuth()
+  @Get('me')
+  public async findMe(@CurrentUser() userData: IUserData) {
+    const result = await this.usersService.findMe(userData);
+    return UserMapper.toResDto(result);
   }
 
-  @Get()
-  findAll(@Query() query: UserListReqDto) {
-    return this.usersService.findAll();
+  @ApiBearerAuth()
+  @Patch('me')
+  public async updateMe(
+    @CurrentUser() userData: IUserData,
+    @Body() updateUserDto: UpdateUserReqDto,
+  ) {
+    const result = await this.usersService.updateMe(userData, updateUserDto);
+    return UserMapper.toResDto(result);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @ApiBearerAuth()
+  @Delete('me')
+  public async removeMe(@CurrentUser() userData: IUserData): Promise<void> {
+    await this.usersService.removeMe(userData);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserReqDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('avatar'))
+  @ApiFile('avatar', false, true)
+  @Post('me/avatar')
+  public async uploadAvatar(
+    @CurrentUser() userData: IUserData,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<void> {
+    await this.usersService.uploadAvatar(userData, file);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @ApiBearerAuth()
+  @Delete('me/avatar')
+  public async deleteAvatar(@CurrentUser() userData: IUserData): Promise<void> {
+    await this.usersService.deleteAvatar(userData);
+  }
+
+  @SkipAuth()
+  @Get(':userId')
+  public async findOne(
+    @Param('userId', ParseUUIDPipe) userId: UserID,
+  ): Promise<UserBaseResDto> {
+    const result = await this.usersService.findOne(userId);
+    return UserMapper.toResDto(result);
+  }
+
+  @ApiBearerAuth()
+  @Post(':userId/follow')
+  public async follow(
+    @Param('userId', ParseUUIDPipe) userId: UserID,
+    @CurrentUser() userData: IUserData,
+  ): Promise<void> {
+    await this.usersService.follow(userData, userId);
+  }
+
+  @ApiBearerAuth()
+  @Delete(':userId/follow')
+  public async unfollow(
+    @Param('userId', ParseUUIDPipe) userId: UserID,
+    @CurrentUser() userData: IUserData,
+  ): Promise<void> {
+    await this.usersService.unfollow(userData, userId);
   }
 }
