@@ -41,6 +41,13 @@ export class UsersService {
     return await this.userRepository.findOneBy({ id: userId });
   }
 
+  private async isUserExistOrThrow(userId: UserID): Promise<void> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new ConflictException('User not found');
+    }
+  }
+
   // public async follow(userData: IUserData, userId: UserID): Promise<void> {
   //   if (userData.userId === userId) {
   //     throw new ConflictException('You cannot follow yourself');
@@ -79,14 +86,6 @@ export class UsersService {
   //     following_id: userId,
   //   });
   // }
-
-  private async isUserExistOrThrow(userId: UserID): Promise<void> {
-    const user = await this.userRepository.findOneBy({ id: userId });
-    if (!user) {
-      throw new ConflictException('User not found');
-    }
-  }
-
   // public async checkAbilityToEditArticle(userId: string, articleId: string) {
   //   // Check if the user has permission to edit the article
   // }

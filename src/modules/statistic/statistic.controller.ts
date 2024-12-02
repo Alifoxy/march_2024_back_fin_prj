@@ -14,7 +14,7 @@ export class StatisticController {
   @SkipAuth()
   @Get(':carId/statistic')
   public async getStatistic(): Promise<StatisticResDto> {
-    const result = await this.statisticService.getStatistic(userData, carId);
+    const result = await this.statisticService.getStatistic();
     return StatisticMapper.toResDto(result);
   }
 }

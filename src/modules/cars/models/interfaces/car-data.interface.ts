@@ -1,8 +1,8 @@
 import { UserID } from '../../../../common/types/entity-ids.type';
 
-export interface IUserData {
+export interface ICarData {
   userId: UserID;
-  deviceId: string;
+  carId: string;
   email: string;
   isPremium?: boolean;
 }

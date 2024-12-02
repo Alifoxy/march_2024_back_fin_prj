@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { IUserData } from '../../auth/models/interfaces/user-data.interface';
 import { CarID } from '../../../common/types/entity-ids.type';
@@ -13,6 +13,12 @@ export class StatisticService {
     userData: IUserData,
     carId: CarID,
   ): Promise<StatisticEntity> {
+    const prem = userData.isPremium;
+    if (prem === false) {
+      throw new NotFoundException(
+        'You must have premium account to see car statistic',
+      );
+    }
     return await this.statisticRepository.getById(userData, carId);
   }
 
