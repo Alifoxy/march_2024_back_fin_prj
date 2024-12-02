@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { UserResDto } from '../../../../users/models/dto/res/user.res.dto';
 import { ModelEnum } from '../../enums/model.enum';
 import { BrandEnum } from '../../enums/brand.enum';
+import { CarID } from '../../../../../common/types/entity-ids.type';
 
 export class CarResDto {
   @ApiProperty({
@@ -12,8 +13,8 @@ export class CarResDto {
   id: string;
 
   @ApiProperty({
-    example: 'Article Title',
-    description: 'Article Title',
+    example: 'Car Producer',
+    description: 'Car Producer',
   })
   producer: string;
 

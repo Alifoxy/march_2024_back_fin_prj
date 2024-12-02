@@ -23,7 +23,9 @@ export class CarRepository extends Repository<CarEntity> {
     qb.setParameter('userId', userData.userId);
 
     if (query.search) {
-      qb.andWhere('CONCAT(car.brand, car.model, car.description, car.region, car.year) ILIKE :search');
+      qb.andWhere(
+        'CONCAT(car.brand, car.model, car.description, car.region, car.year) ILIKE :search',
+      );
       qb.setParameter('search', `%${query.search}%`);
     }
     if (query.price) {
@@ -37,20 +39,15 @@ export class CarRepository extends Repository<CarEntity> {
 
   public async getById(
     userData: IUserData,
-    articleId: ArticleID,
-  ): Promise<ArticleEntity> {
-    const qb = this.createQueryBuilder('article');
-    qb.leftJoinAndSelect('article.tags', 'tag');
-    qb.leftJoinAndSelect('article.user', 'user');
-    qb.leftJoinAndSelect(
-      'user.followings',
-      'following',
-      'following.follower_id = :userId',
-    );
-    qb.leftJoinAndSelect('article.likes', 'like', 'like.user_id = :userId');
+    carId: CarID,
+  ): Promise<CarEntity> {
+    const qb = this.createQueryBuilder('car');
+    qb.leftJoinAndSelect('car.statistic', 'statistic');
+    qb.leftJoinAndSelect('car.user', 'user');
+    qb.leftJoinAndSelect('car.price', 'price');
     qb.setParameter('userId', userData.userId);
 
-    qb.where('article.id = :articleId', { articleId });
+    qb.where('car.id = :carId', { carId });
     return await qb.getOne();
   }
   // qb.leftJoinAndSelect('article.tags', 'tag', 'tag.name = :tag');

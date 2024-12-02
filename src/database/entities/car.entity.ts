@@ -14,8 +14,10 @@ import { TableNameEnum } from './enums/table-name.enum';
 import { CreateUpdateModel } from './models/create-update.model';
 import { UserEntity } from './user.entity';
 import { StatisticEntity } from './statistic.entity';
-import { ModelEnum } from "../../modules/cars/models/enums/model.enum";
-import { BrandEnum } from "../../modules/cars/models/enums/brand.enum";
+import { ModelEnum } from '../../modules/cars/models/enums/model.enum';
+import { BrandEnum } from '../../modules/cars/models/enums/brand.enum';
+import { RegionEnum } from '../../modules/cars/models/enums/region.enum';
+import { PriceEntity } from './price.entity';
 
 @Entity(TableNameEnum.CARS)
 export class CarEntity extends CreateUpdateModel {
@@ -42,6 +44,12 @@ export class CarEntity extends CreateUpdateModel {
 
   @Column('text')
   image: string;
+
+  // @Column('text')
+  // price_value?: number;
+  //
+  // @Column('text')
+  // price_currency?: CurrencyEnum;
 
   @OneToOne(() => PriceEntity, (entity) => entity.car)
   price?: PriceEntity;

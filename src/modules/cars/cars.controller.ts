@@ -46,7 +46,7 @@ export class CarsController {
     @CurrentUser() userData: IUserData,
     @Query() query: ListArticleQueryDto,
   ): Promise<CarListResDto> {
-    const [entities, total] = await this.articleService.findAll(
+    const [entities, total] = await this.carService.findAll(
       userData,
       query,
     );
@@ -57,9 +57,9 @@ export class CarsController {
   public async findOne(
     @CurrentUser() userData: IUserData,
     @Param('carId', ParseUUIDPipe) carId: CarID,
-  ): Promise<ArticleResDto> {
-    const result = await this.articleService.findOne(userData, articleId);
-    return ArticlesMapper.toResDto(result);
+  ): Promise<CarResDto> {
+    const result = await this.carService.findOne(userData, carId);
+    return CarsMapper.toResDto(result);
   }
 
   @Patch(':carId')

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { In } from 'typeorm';
 
-import { ArticleID, CarID } from "../../../common/types/entity-ids.type";
+import { ArticleID, CarID } from '../../../common/types/entity-ids.type';
 import { ArticleEntity } from '../../../database/entities/article.entity';
 import { TagEntity } from '../../../database/entities/tag.entity';
 import { IUserData } from '../../auth/models/interfaces/user-data.interface';
@@ -15,48 +15,52 @@ import { TagRepository } from '../../repository/services/tag.repository';
 import { CreateArticleDto } from '../models/dto/req/create-article.dto';
 import { ListArticleQueryDto } from '../models/dto/req/list-article-query.dto';
 import { UpdateArticleDto } from '../models/dto/req/update-article.dto';
-import { CreateCarDto } from "../models/dto/req/create-car.dto";
-import { CarEntity } from "../../../database/entities/car.entity";
-import { CarRepository } from "../../repository/services/car.repository";
+import { CreateCarDto } from '../models/dto/req/create-car.dto';
+import { CarEntity } from '../../../database/entities/car.entity';
+import { CarRepository } from '../../repository/services/car.repository';
+import { StatisticRepository } from "../../repository/services/statistic.repository";
+import { ListCarQueryDto } from "../models/dto/req/car-list-query.dto";
+import { UpdateCarDto } from "../models/dto/req/update-car.dto";
+import { CarBaseReqDto } from "../models/dto/req/car-base.req.dto";
 
 @Injectable()
 export class CarsService {
   constructor(
     private readonly carRepository: CarRepository,
-    private readonly tagRepository: TagRepository,
-    private readonly likeRepository: LikeRepository,
+    private readonly statisticRepository: StatisticRepository,
   ) {}
 
   public async create(
     userData: IUserData,
-    dto: CreateCarDto,
+    dto: CarBaseReqDto
   ): Promise<CarEntity> {
     const statistic = await this.createStatistic(dto.statistic);
 
     return await this.carRepository.save(
-      this.carRepository.create({ ...dto, statistic, user_id: userData.userId }),
+      this.carRepository.create({
+        ...dto,
+        statistic,
+        user_id: userData.userId,
+      }),
     );
   }
 
   public async findAll(
     userData: IUserData,
-    query: ListArticleQueryDto,
-  ): Promise<[ArticleEntity[], number]> {
-    return await this.articleRepository.findAll(userData, query);
+    query: ListCarQueryDto,
+  ): Promise<[CarEntity[], number]> {
+    return await this.carRepository.findAll(userData, query);
   }
 
-  public async findOne(
-    userData: IUserData,
-    carId: CarID,
-  ): Promise<CarEntity> {
-    return await this.articleRepository.getById(userData, carId);
+  public async findOne(userData: IUserData, carId: CarID): Promise<CarEntity> {
+    return await this.carRepository.getById(userData, carId);
   }
 
   public async update(
     userData: IUserData,
-    articleId: ArticleID,
-    updateUserDto: UpdateArticleDto,
-  ): Promise<ArticleEntity> {
+    carId: CarID,
+    updateUserDto: UpdateCarDto,
+  ): Promise<CarEntity> {
     return {} as any;
   }
 
@@ -109,8 +113,10 @@ export class CarsService {
   //   );
   //   return [...entities, ...newEntities];
   // }
+  private async createStatistic(statistic: any) {
+    
+  }
 }
-
 
 // public async uploadPhoto(
 //   carData: ICarData,
@@ -127,7 +133,6 @@ export class CarsService {
 // }
 // await this.carRepository.save({ ...car, image: pathToFile });
 // }
-
 
 // public async deletePhoto(carData: ICarData): Promise<void> {
 //   const car = await this.carsRepository.findOneBy({ id: carData.carId });
